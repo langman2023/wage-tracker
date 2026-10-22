@@ -144,6 +144,18 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
 .tpl-edit input.n{flex:1}
 .tpl-edit input.a{width:76px;text-align:right;font-variant-numeric:tabular-nums}
 .tpl-edit .x{color:var(--danger);font-size:18px;width:24px;text-align:center;flex:none}
+.shift-edit{display:flex;align-items:center;gap:7px;padding:9px 14px;border-bottom:1px solid var(--sep)}
+.shift-edit:last-child{border-bottom:0}
+.shift-edit .nm{width:42px;flex:none;font-size:14px;font-weight:600}
+.shift-edit input.t{
+  width:82px;flex:none;text-align:center;font-size:16px;font-variant-numeric:tabular-nums;
+  background:var(--bg);border-radius:8px;padding:6px 2px;
+}
+.shift-edit input.r{
+  width:52px;flex:none;text-align:center;font-size:16px;font-variant-numeric:tabular-nums;
+  background:var(--bg);border-radius:8px;padding:6px 2px;
+}
+.shift-edit .u{font-size:12px;color:var(--sub);flex:none}
 .addbtn{display:flex;align-items:center;gap:6px;color:var(--accent);font-size:15px;padding:11px 14px}
 .tip{font-size:12px;color:var(--sub);line-height:1.65;padding:4px 6px 0}
 .tip b{color:var(--text);font-weight:600}
@@ -286,6 +298,27 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
       <div class="row"><div class="rl">默认中途休息</div><input class="rv" id="defaultRest" type="number" inputmode="numeric" step="5" min="0"><div class="unit">分钟/班</div></div>
     </div>
     <div class="group">
+      <div class="gt">班次模板（选白班/夜班时自动填入，当天可临时改）</div>
+      <div class="shift-edit">
+        <span class="nm" style="color:var(--day)">白班</span>
+        <input class="t" id="dayStart" type="time" aria-label="白班上班时间">
+        <span class="u">–</span>
+        <input class="t" id="dayEnd" type="time" aria-label="白班下班时间">
+        <span class="u">休</span>
+        <input class="r" id="dayRest" type="number" inputmode="numeric" min="0" step="5" aria-label="白班休息分钟">
+        <span class="u">分</span>
+      </div>
+      <div class="shift-edit">
+        <span class="nm" style="color:var(--night)">夜班</span>
+        <input class="t" id="nightStart" type="time" aria-label="夜班上班时间">
+        <span class="u">–</span>
+        <input class="t" id="nightEnd" type="time" aria-label="夜班下班时间">
+        <span class="u">休</span>
+        <input class="r" id="nightRest" type="number" inputmode="numeric" min="0" step="5" aria-label="夜班休息分钟">
+        <span class="u">分</span>
+      </div>
+    </div>
+    <div class="group">
       <div class="gt">补贴模板（记一笔时可一键填入，金额可随时改）</div>
       <div id="tplList"></div>
       <button class="addbtn" id="addTpl">＋ 添加补贴类型</button>
@@ -386,6 +419,7 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
 var KEY='wage-tracker-v1';
 var DEF={
   settings:{dayRate:20,nightRate:20,nightBonus:0,defaultRest:60,
+    shifts:{day:{start:'09:00',end:'18:00',rest:60},night:{start:'22:00',end:'06:00',rest:60}},
     tpls:[{id:'t1',name:'餐补',amount:20},{id:'t2',name:'交通补',amount:10}]},
   records:{}
 };
@@ -398,6 +432,11 @@ function load(){
     o.settings=Object.assign({},DEF.settings,o.settings||{});
     o.records=o.records||{};
     if(!Array.isArray(o.settings.tpls)) o.settings.tpls=[];
+    var ds=DEF.settings.shifts;
+    o.settings.shifts={
+      day:Object.assign({},ds.day,(o.settings.shifts||{}).day||{}),
+      night:Object.assign({},ds.night,(o.settings.shifts||{}).night||{})
+    };
     return o;
   }catch(e){ return JSON.parse(JSON.stringify(DEF)); }
 }
@@ -527,6 +566,12 @@ function renderSet(){
   document.getElementById('nightRate').value=S.settings.nightRate;
   document.getElementById('nightBonus').value=S.settings.nightBonus;
   document.getElementById('defaultRest').value=S.settings.defaultRest;
+  ['day','night'].forEach(function(t){
+    var s=S.settings.shifts[t]||{};
+    document.getElementById(t+'Start').value=s.start||'';
+    document.getElementById(t+'End').value=s.end||'';
+    document.getElementById(t+'Rest').value=s.rest!=null?s.rest:num(S.settings.defaultRest);
+  });
   document.getElementById('tplList').innerHTML=S.settings.tpls.map(function(t,i){
     return '<div class="tpl-edit" data-i="'+i+'">'
       +'<input class="n" value="'+esc(t.name)+'" placeholder="补贴名称">'
@@ -541,14 +586,23 @@ var editing=null, draft=null;
 function openSheet(k){
   editing=k;
   var r=S.records[k]||{};
+  var isNew=!S.records[k];
+  var tpl=(S.settings.shifts&&S.settings.shifts[r.type||'day'])||{};
   draft={
     type:r.type||'day',
-    start:r.start||'', end:r.end||'',
+    start:r.start||(isNew&&tpl.start||''), end:r.end||(isNew&&tpl.end||''),
     hours:r.hours!=null&&r.hours!==''?r.hours:'',
-    rest:(r.rest!=null?r.rest:(S.records[k]?0:num(S.settings.defaultRest))),
+    rest:(r.rest!=null?r.rest:(isNew?(tpl.rest!=null?tpl.rest:num(S.settings.defaultRest)):0)),
     subsidies:(r.subsidies||[]).map(function(s){ return {name:s.name,amount:s.amount}; }),
     note:r.note||''
   };
+  // 新记录直接套用班次模板，自动算出净时长
+  if(isNew&&draft.start&&draft.end){
+    draft.hours=netH();
+    draft.tplApplied=draft.type;
+  }else{
+    draft.tplApplied='';
+  }
   var dt=k2date(k);
   document.getElementById('sheetTitle').innerHTML=(dt.getMonth()+1)+'月'+dt.getDate()+'日<span>'+WD[dt.getDay()]+'</span>';
   document.getElementById('inStart').value=draft.start;
@@ -647,14 +701,21 @@ document.getElementById('btnDel').onclick=function(){
 document.getElementById('segType').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
   draft.type=b.dataset.t;
-  if((draft.type==='day'||draft.type==='night')&&!num(draft.hours)&&!draft.start){
-    // 给个常用默认值，方便快速记录
-    if(draft.type==='night'){ draft.start='22:00'; draft.end='06:00'; }
-    else { draft.start='09:00'; draft.end='18:00'; }
-    draft.hours=netH();
-    document.getElementById('inStart').value=draft.start;
-    document.getElementById('inEnd').value=draft.end;
-    document.getElementById('inHours').value=draft.hours;
+  if(draft.type==='day'||draft.type==='night'){
+    // 时间是空的、或之前就是模板自动带出的 → 换成该班次的模板
+    if(draft.tplApplied||(!draft.start&&!num(draft.hours))){
+      var t=(S.settings.shifts&&S.settings.shifts[draft.type])||{};
+      if(t.start&&t.end){
+        draft.start=t.start; draft.end=t.end;
+        draft.rest=(t.rest!=null?t.rest:num(S.settings.defaultRest));
+        draft.hours=netH();
+        draft.tplApplied=draft.type;
+        document.getElementById('inStart').value=draft.start;
+        document.getElementById('inEnd').value=draft.end;
+        document.getElementById('inRest').value=draft.rest;
+        document.getElementById('inHours').value=draft.hours;
+      }
+    }
   }
   syncSheet();
 });
@@ -675,6 +736,7 @@ function netH(){                          // 净时长 = 在岗时长 - 中途�
   document.getElementById(id).addEventListener('change',function(){
     draft.start=document.getElementById('inStart').value;
     draft.end=document.getElementById('inEnd').value;
+    draft.tplApplied='';                 // 手动改过时间后不再套模板
     var h=netH();
     if(h!==''){ draft.hours=h; document.getElementById('inHours').value=h; }
     syncSheet();
@@ -682,6 +744,7 @@ function netH(){                          // 净时长 = 在岗时长 - 中途�
 });
 document.getElementById('inRest').addEventListener('change',function(){
   draft.rest=Math.max(0,parseInt(this.value,10)||0);
+  draft.tplApplied='';
   this.value=draft.rest;
   var h=netH();
   if(h!==''){ draft.hours=h; document.getElementById('inHours').value=h; }
@@ -720,6 +783,15 @@ document.getElementById('subList').addEventListener('input',function(e){
 ['dayRate','nightRate','nightBonus','defaultRest'].forEach(function(id){
   document.getElementById(id).addEventListener('change',function(){
     S.settings[id]=num(this.value); save(); renderAll();
+  });
+});
+[['dayStart','day','start'],['dayEnd','day','end'],['dayRest','day','rest'],
+ ['nightStart','night','start'],['nightEnd','night','end'],['nightRest','night','rest']].forEach(function(a){
+  document.getElementById(a[0]).addEventListener('change',function(){
+    S.settings.shifts=S.settings.shifts||{};
+    S.settings.shifts[a[1]]=S.settings.shifts[a[1]]||{};
+    S.settings.shifts[a[1]][a[2]]=(a[2]==='rest'?Math.max(0,parseInt(this.value,10)||0):this.value);
+    save(); renderAll();
   });
 });
 document.getElementById('addTpl').onclick=function(){
