@@ -568,7 +568,7 @@ function chipsHTML(st){
       +'<div class="mid"><div class="l1"><span class="tag t'+r.type+'">'+TN[r.type]+'</span></div>'
       +'<div class="l2">'+lines.join('')+'</div></div>'
       +'<div class="amt"><div class="v">'+(c.pay>0?'¥'+money(c.pay):'—')+'</div>'
-      +'<div class="h">'+(c.hours>0?c.hours+' h':'')+(c.sub>0?' · 补'+money(c.sub).replace('.00',''):'')+'</div></div>';
+      +'<div class="h">'+(c.hours>0?c.hours+' h':'')+(c.sub>0?' · 补'+money(c.sub).replace('.00',''):'')+'</div></div></div>';
   }).join('');
   document.getElementById('listEmpty').classList.toggle('hide',ks.length>0);
   box.classList.toggle('hide',ks.length===0);
