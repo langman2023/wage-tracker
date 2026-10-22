@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>工资记录</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="工资记录">
+<meta name="theme-color" content="#f2f2f7">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<style>
+:root{
+  --bg:#f2f2f7; --card:#fff; --text:#1c1c1e; --sub:#8e8e93; --sub2:#aeaeb2;
+  --sep:rgba(60,60,67,.12); --accent:#007aff; --accent-soft:rgba(0,122,255,.12);
+  --day:#ff9500; --night:#5e5ce6; --rest:#c7c7cce0; --leave:#ffcc00;
+  --money:#1c1c1e; --danger:#ff3b30; --ok:#34c759;
+  --sheet-bg:rgba(0,0,0,.4);
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#000; --card:#1c1c1e; --text:#f2f2f7; --sub:#8e8e93; --sub2:#636366;
+    --sep:rgba(84,84,88,.48); --accent:#0a84ff; --accent-soft:rgba(10,132,255,.18);
+    --money:#f2f2f7; --sheet-bg:rgba(0,0,0,.55); --rest:#48484a;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font:15px/1.45 -apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+  overscroll-behavior-y:none; -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;user-select:none;-webkit-touch-callout:none}
+input,textarea,select{font:inherit;font-size:16px;color:inherit;background:none;border:0;outline:none;width:100%}
+input::placeholder{color:var(--sub2)}
+.hide{display:none !important}
+
+/* ---------- 布局 ---------- */
+.topbar{
+  position:sticky;top:0;z-index:20;background:var(--bg);
+  padding:calc(env(safe-area-inset-top,0px) + 10px) 16px 6px;
+}
+.topbar .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.monthnav{display:flex;align-items:center;gap:2px}
+.monthnav .title{font-size:20px;font-weight:600;min-width:132px;text-align:center;letter-spacing:.2px}
+.navbtn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:20px}
+.navbtn:active{background:var(--sep)}
+main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640px;margin:0 auto}
+
+/* ---------- 提示条 ---------- */
+.notice{
+  background:var(--accent-soft);border-radius:12px;padding:11px 13px;margin:6px 0 10px;
+  font-size:12.5px;line-height:1.6;color:var(--text);position:relative;padding-right:30px;
+}
+.notice b{color:var(--accent)}
+.notice.warn{background:rgba(255,59,48,.12)}
+.notice.warn b{color:var(--danger)}
+.notice .cl{position:absolute;right:10px;top:8px;color:var(--sub);font-size:16px;line-height:1}
+
+/* ---------- 概览卡 ---------- */
+.summary{
+  background:var(--card);border-radius:var(--r);padding:16px;margin:6px 0 12px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+}
+.summary .label{font-size:12px;color:var(--sub);letter-spacing:.5px}
+.summary .money{font-size:34px;font-weight:700;letter-spacing:-.5px;margin:2px 0 2px;font-variant-numeric:tabular-nums}
+.summary .money small{font-size:16px;font-weight:600;opacity:.55;margin-right:2px}
+.summary .rate-line{font-size:12px;color:var(--sub);margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid var(--sep);padding-top:12px}
+.grid3 .cell{text-align:center}
+.grid3 .v{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+.grid3 .k{font-size:11px;color:var(--sub);margin-top:1px}
+
+/* ---------- 日历 ---------- */
+.cal{background:var(--card);border-radius:var(--r);padding:10px 6px 12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.weekhead{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:4px}
+.weekhead div{text-align:center;font-size:11px;color:var(--sub);padding:4px 0}
+.weekhead div.we{color:var(--sub2)}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.day{
+  position:relative;aspect-ratio:1/1.12;border-radius:10px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:1px;overflow:hidden;
+}
+.day.other{opacity:.28}
+.day .d{font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1}
+.day .p{font-size:9.5px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1;opacity:.9;white-space:nowrap}
+.day .bar{position:absolute;left:50%;transform:translateX(-50%);bottom:4px;width:14px;height:3px;border-radius:2px;background:currentColor;opacity:.85}
+.day.today .d{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--accent);color:#fff}
+.day.has.today .d{background:var(--day)}
+.day.has.today.night .d{background:var(--night)}
+.day.has.today.rest .d{background:#b0b0b6}
+.day.has.today.leave .d{background:var(--leave);color:#1c1c1e}
+.day.has{color:var(--day)}
+.day.has.night{color:var(--night)}
+.day.has.rest{color:#a1a1a6}
+.day.has.leave{color:#e0ac00}
+.day.has:not(.other){background:var(--sep)}
+.day.has:not(.other){background:color-mix(in srgb, currentColor 13%, transparent)}
+.day.pad{visibility:hidden}
+.day:active{background:var(--sep)}
+
+/* ---------- 统计条 ---------- */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 2px}
+.chip{background:var(--card);border-radius:999px;padding:5px 11px;font-size:12px;color:var(--sub);box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.chip b{color:var(--text);font-weight:600;font-variant-numeric:tabular-nums}
+.chip .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:1px}
+
+/* ---------- 明细列表 ---------- */
+.list{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--sep)}
+.item:last-child{border-bottom:0}
+.item:active{background:var(--sep)}
+.item .date{width:44px;flex:none}
+.item .date .dd{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.item .date .dw{font-size:11px;color:var(--sub)}
+.item .mid{flex:1;min-width:0}
+.item .mid .l1{display:flex;align-items:center;gap:6px}
+.tag{font-size:11px;font-weight:600;padding:1.5px 7px;border-radius:5px;color:#fff;flex:none}
+.tag.day{background:var(--day)} .tag.night{background:var(--night)}
+.tag.rest{background:#c7c7cc;color:#1c1c1e} .tag.leave{background:var(--leave);color:#1c1c1e}
+.item .mid .l2{font-size:11.5px;color:var(--sub);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .amt{text-align:right;flex:none}
+.item .amt .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+.item .amt .h{font-size:11px;color:var(--sub);font-variant-numeric:tabular-nums}
+.empty{text-align:center;color:var(--sub);padding:36px 20px;font-size:13.5px;line-height:1.7}
+
+/* ---------- 设置 ---------- */
+.group{background:var(--card);border-radius:var(--r);margin-bottom:14px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.group>.gt{font-size:12px;color:var(--sub);padding:12px 14px 6px;letter-spacing:.4px}
+.row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--sep)}
+.row:last-child{border-bottom:0}
+.row .rl{flex:none;font-size:15px}
+.row .rv{flex:1;text-align:right;color:var(--sub);font-variant-numeric:tabular-nums}
+.row input.rv{color:var(--text);text-align:right}
+.row .unit{font-size:13px;color:var(--sub);flex:none}
+.row.tap:active{background:var(--sep)}
+.row .arrow{color:var(--sub2);font-size:16px;flex:none}
+.tpl-edit{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid var(--sep)}
+.tpl-edit:last-child{border-bottom:0}
+.tpl-edit input.n{flex:1}
+.tpl-edit input.a{width:76px;text-align:right;font-variant-numeric:tabular-nums}
+.tpl-edit .x{color:var(--danger);font-size:18px;width:24px;text-align:center;flex:none}
+.addbtn{display:flex;align-items:center;gap:6px;color:var(--accent);font-size:15px;padding:11px 14px}
+.tip{font-size:12px;color:var(--sub);line-height:1.65;padding:4px 6px 0}
+.tip b{color:var(--text);font-weight:600}
+
+/* ---------- 悬浮按钮 ---------- */
+.fab{
+  position:fixed;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 74px);z-index:30;
+  height:52px;padding:0 18px;border-radius:26px;background:var(--accent);color:#fff;
+  font-size:15px;font-weight:600;display:flex;align-items:center;gap:5px;
+  box-shadow:0 4px 16px rgba(0,122,255,.35);
+}
+.fab:active{opacity:.85;transform:scale(.97)}
+
+/* ---------- 底部导航 ---------- */
+.tabbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;
+  background:var(--card);
+  background:color-mix(in srgb, var(--card) 88%, transparent);
+  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-top:.5px solid var(--sep);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.tabbar button{flex:1;padding:8px 0 7px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--sub);font-size:10.5px}
+.tabbar button.on{color:var(--accent)}
+.tabbar .ico{font-size:21px;line-height:1}
+
+/* ---------- 编辑面板 ---------- */
+#mask{position:fixed;inset:0;background:var(--sheet-bg);z-index:50;opacity:0;transition:opacity .22s;pointer-events:none}
+#mask.show{opacity:1;pointer-events:auto}
+#sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:51;background:var(--card);
+  border-radius:16px 16px 0 0;transform:translateY(100%);transition:transform .26s cubic-bezier(.32,.72,0,1);
+  max-height:92vh;display:flex;flex-direction:column;
+}
+#sheet.show{transform:translateY(0)}
+.sheet-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 10px;border-bottom:1px solid var(--sep)}
+.sheet-hd .t{font-size:16px;font-weight:600}
+.sheet-hd .t span{font-weight:400;color:var(--sub);font-size:13px;margin-left:6px}
+.sheet-hd button{color:var(--accent);font-size:15px;font-weight:600}
+.sheet-bd{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 14px 8px}
+.sheet-ft{padding:10px 14px calc(env(safe-area-inset-bottom,0px) + 12px);border-top:1px solid var(--sep)}
+.sec{padding:12px 0 4px}
+.sec>.st{font-size:12px;color:var(--sub);margin-bottom:8px;letter-spacing:.4px}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.seg button{
+  padding:9px 0;border-radius:10px;background:var(--bg);font-size:14px;font-weight:500;color:var(--sub);
+  border:1.5px solid transparent;transition:.12s;
+}
+.seg button.on{font-weight:600;color:#fff}
+.seg button.on[data-t="day"]{background:var(--day)}
+.seg button.on[data-t="night"]{background:var(--night)}
+.seg button.on[data-t="rest"]{background:#b0b0b6}
+.seg button.on[data-t="leave"]{background:var(--leave);color:#1c1c1e}
+.timebox{display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:10px;padding:10px 12px}
+.timebox input{font-variant-numeric:tabular-nums;text-align:center;flex:1}
+.timebox .sep-c{color:var(--sub)}
+.timebox .eq{color:var(--sub);font-size:13px;flex:none}
+.timebox .h{width:64px;flex:none;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.timebox .hu{font-size:12px;color:var(--sub);flex:none}
+.tpls{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tpls button{padding:6px 11px;border-radius:999px;background:var(--bg);font-size:13px;color:var(--text);border:1.5px solid transparent}
+.tpls button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+.tpls button.add{color:var(--accent)}
+.sub-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--sep)}
+.sub-row:last-child{border-bottom:0}
+.sub-row input.n{flex:1}
+.sub-row input.a{width:82px;text-align:right;font-variant-numeric:tabular-nums}
+.sub-row .x{color:var(--danger);font-size:18px;width:22px;text-align:center;flex:none}
+.sub-total{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0 2px}
+.sub-total .k{font-size:13px;color:var(--sub)}
+.sub-total .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.btn{width:100%;padding:13px 0;border-radius:12px;font-size:16px;font-weight:600;background:var(--accent);color:#fff}
+.btn:active{opacity:.85}
+.btn.ghost{background:var(--bg);color:var(--text);font-weight:500}
+.btn.danger{background:var(--bg);color:var(--danger);font-weight:500;margin-top:8px}
+.note-input{background:var(--bg);border-radius:10px;padding:10px 12px;font-size:15px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="row">
+    <div class="monthnav">
+      <button class="navbtn" id="prevM" aria-label="上个月">‹</button>
+      <div class="title" id="mTitle"></div>
+      <button class="navbtn" id="nextM" aria-label="下个月">›</button>
+    </div>
+    <button class="navbtn" id="todayBtn" aria-label="回到本月" style="font-size:13px;width:auto;padding:0 8px">本月</button>
+  </div>
+</header>
+
+<main>
+  <div class="notice hide" id="notice"></div>
+
+  <!-- 日历页 -->
+  <section id="page-cal">
+    <div class="summary">
+      <div class="label">本月应发工资</div>
+      <div class="money"><small>¥</small><span id="sMoney">0.00</span></div>
+      <div class="rate-line" id="sRate"></div>
+      <div class="grid3">
+        <div class="cell"><div class="v" id="sHours">0</div><div class="k">总工时 (h)</div></div>
+        <div class="cell"><div class="v" id="sDays">0</div><div class="k">出勤 (天)</div></div>
+        <div class="cell"><div class="v" id="sSub">¥0</div><div class="k">补贴合计</div></div>
+      </div>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="cal">
+      <div class="weekhead"><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div class="we">六</div><div class="we">日</div></div>
+      <div class="calgrid" id="calgrid"></div>
+    </div>
+  </section>
+
+  <!-- 明细页 -->
+  <section id="page-list" class="hide">
+    <div class="summary">
+      <div class="label">本月合计</div>
+      <div class="money"><small>¥</small><span id="lMoney">0.00</span></div>
+      <div class="rate-line" id="lRate"></div>
+      <div class="grid3">
+        <div class="cell"><div class="v" id="lHours">0</div><div class="k">总工时 (h)</div></div>
+        <div class="cell"><div class="v" id="lDays">0</div><div class="k">出勤 (天)</div></div>
+        <div class="cell"><div class="v" id="lAvg">¥0</div><div class="k">日均工资</div></div>
+      </div>
+    </div>
+    <div class="chips" id="chips2"></div>
+    <div class="list" id="listbox"></div>
+    <div class="empty hide" id="listEmpty">这个月还没有记录<br>点右下角「记一笔」开始记录</div>
+  </section>
+
+  <!-- 设置页 -->
+  <section id="page-set" class="hide" style="padding-top:8px">
+    <div class="group">
+      <div class="gt">时薪设置</div>
+      <div class="row"><div class="rl">白班时薪</div><input class="rv" id="dayRate" type="number" inputmode="decimal" step="0.5" min="0"><div class="unit">元/时</div></div>
+      <div class="row"><div class="rl">夜班时薪</div><input class="rv" id="nightRate" type="number" inputmode="decimal" step="0.5" min="0"><div class="unit">元/时</div></div>
+      <div class="row"><div class="rl">夜班额外补贴</div><input class="rv" id="nightBonus" type="number" inputmode="decimal" step="1" min="0"><div class="unit">元/班</div></div>
+    </div>
+    <div class="group">
+      <div class="gt">补贴模板（记一笔时可一键填入，金额可随时改）</div>
+      <div id="tplList"></div>
+      <button class="addbtn" id="addTpl">＋ 添加补贴类型</button>
+    </div>
+    <div class="group">
+      <div class="gt">数据管理</div>
+      <div class="row tap" id="expJson"><div class="rl">导出备份（JSON）</div><div class="rv">保存到「文件」</div><div class="arrow">›</div></div>
+      <div class="row tap" id="expCsv"><div class="rl">导出本月表格（CSV）</div><div class="rv">可用表格打开</div><div class="arrow">›</div></div>
+      <div class="row tap" id="impJson"><div class="rl">导入备份</div><div class="rv">从 JSON 恢复</div><div class="arrow">›</div></div>
+      <div class="row tap" id="copyTxt"><div class="rl">复制备份文本</div><div class="rv">粘贴到备忘录</div><div class="arrow">›</div></div>
+      <div class="row tap" id="clearAll"><div class="rl" style="color:var(--danger)">清空全部记录</div><div class="rv"></div><div class="arrow">›</div></div>
+    </div>
+    <div class="group">
+      <div class="gt">添加到 iPhone 主屏幕</div>
+      <div class="tip">
+        1. 用 <b>Safari</b> 打开本页（微信内打开请先点右上角「在 Safari 中打开」）<br>
+        2. 点底部中间的<b>分享按钮</b>（方框向上箭头）<br>
+        3. 向下找到 <b>「添加到主屏幕」</b> → 右上角「添加」<br>
+        之后就能像 App 一样全屏打开，<b>数据存在手机本地</b>，不联网也能用。
+      </div>
+    </div>
+    <div class="tip" style="padding-bottom:20px">
+      规则说明：白班 / 夜班按时薪 × 时长计算；<b>休息和请假不计工资，也不会扣钱</b>，只用来标记当天状态。
+    </div>
+  </section>
+</main>
+
+<button class="fab" id="fab">＋ 记一笔</button>
+
+<nav class="tabbar">
+  <button data-p="cal" class="on"><span class="ico">▦</span>日历</button>
+  <button data-p="list"><span class="ico">☰</span>明细</button>
+  <button data-p="set"><span class="ico">⚙</span>设置</button>
+</nav>
+
+<div id="mask"></div>
+<div id="sheet">
+  <div class="sheet-hd">
+    <button id="btnCancel">取消</button>
+    <div class="t" id="sheetTitle"></div>
+    <button id="btnSave">保存</button>
+  </div>
+  <div class="sheet-bd">
+    <div class="sec">
+      <div class="st">班次类型</div>
+      <div class="seg" id="segType">
+        <button data-t="day">白班</button>
+        <button data-t="night">夜班</button>
+        <button data-t="rest">休息</button>
+        <button data-t="leave">请假</button>
+      </div>
+    </div>
+    <div id="workFields">
+      <div class="sec">
+        <div class="st">上班时长</div>
+        <div class="timebox">
+          <input id="inStart" type="time" aria-label="上班时间">
+          <span class="sep-c">–</span>
+          <input id="inEnd" type="time" aria-label="下班时间">
+          <span class="eq">=</span>
+          <input id="inHours" type="number" inputmode="decimal" step="0.5" min="0" class="h" aria-label="小时数">
+          <span class="hu">小时</span>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="st">补贴（点上面的标签快速添加，金额可改）</div>
+        <div class="tpls" id="sheetTpls"></div>
+        <div id="subList"></div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="st">备注</div>
+      <input id="inNote" class="note-input" placeholder="例如：加班 2 小时 / 请假事由" maxlength="60">
+    </div>
+    <div class="sub-total">
+      <div class="k">当日小计</div>
+      <div class="v" id="sheetTotal">¥0.00</div>
+    </div>
+  </div>
+  <div class="sheet-ft">
+    <button class="btn" id="btnSave2">保存记录</button>
+    <button class="btn danger hide" id="btnDel">删除这条记录</button>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept="application/json,.json" class="hide">
+
+<script>
+(function(){
+'use strict';
+
+/* ============ 存储 ============ */
+var KEY='wage-tracker-v1';
+var DEF={
+  settings:{dayRate:20,nightRate:20,nightBonus:0,
+    tpls:[{id:'t1',name:'餐补',amount:20},{id:'t2',name:'交通补',amount:10}]},
+  records:{}
+};
+var S=load();
+function load(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(!raw) return JSON.parse(JSON.stringify(DEF));
+    var o=JSON.parse(raw);
+    o.settings=Object.assign({},DEF.settings,o.settings||{});
+    o.records=o.records||{};
+    if(!Array.isArray(o.settings.tpls)) o.settings.tpls=[];
+    return o;
+  }catch(e){ return JSON.parse(JSON.stringify(DEF)); }
+}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){ alert('保存失败：存储空间不足'); } }
+
+/* ============ 工具 ============ */
+var WD=['周日','周一','周二','周三','周四','周五','周六'];
+var TN={day:'白班',night:'夜班',rest:'休息',leave:'请假'};
+function pad(n){ return n<10?'0'+n:''+n; }
+function dkey(y,m,d){ return y+'-'+pad(m+1)+'-'+pad(d); }
+function k2date(k){ var p=k.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+function money(n){ return (Math.round(n*100)/100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+function num(v){ var n=parseFloat(v); return isFinite(n)&&n>0?n:0; }
+function rateOf(t){ return t==='night'?num(S.settings.nightRate):num(S.settings.dayRate); }
+function recPay(r){
+  if(!r||!r.type||r.type==='rest'||r.type==='leave') return {hours:0,sub:0,pay:0,wage:0};
+  var h=num(r.hours);
+  var wage=h*rateOf(r.type);
+  var sub=(r.subsidies||[]).reduce(function(a,b){ return a+num(b.amount); },0);
+  if(r.type==='night') sub+=num(S.settings.nightBonus);
+  return {hours:h,sub:sub,pay:wage+sub,wage:wage};
+}
+function monthKeys(y,m){
+  var out=[],last=new Date(y,m+1,0).getDate();
+  for(var d=1;d<=last;d++) out.push(dkey(y,m,d));
+  return out;
+}
+function stat(y,m){
+  var st={pay:0,hours:0,sub:0,wage:0,day:0,night:0,rest:0,leave:0,worked:0};
+  monthKeys(y,m).forEach(function(k){
+    var r=S.records[k];
+    if(!r||!r.type) return;
+    st[r.type]=(st[r.type]||0)+1;
+    var c=recPay(r);
+    st.pay+=c.pay; st.hours+=c.hours; st.sub+=c.sub; st.wage+=c.wage;
+    if(r.type==='day'||r.type==='night') st.worked++;
+  });
+  return st;
+}
+var today=new Date();
+var cur={y:today.getFullYear(),m:today.getMonth()};
+var page='cal';
+
+/* ============ 渲染 ============ */
+function renderAll(){
+  document.getElementById('mTitle').textContent=cur.y+'年'+(cur.m+1)+'月';
+  if(page==='cal') renderCal();
+  else if(page==='list') renderList();
+  else renderSet();
+}
+function renderCal(){
+  var st=stat(cur.y,cur.m);
+  document.getElementById('sMoney').textContent=money(st.pay);
+  document.getElementById('sHours').textContent=(Math.round(st.hours*10)/10);
+  document.getElementById('sDays').textContent=st.worked;
+  document.getElementById('sSub').textContent='¥'+money(st.sub);
+  document.getElementById('sRate').textContent='工时工资 ¥'+money(st.wage)+'　+　补贴 ¥'+money(st.sub)+'　（白班 '+num(S.settings.dayRate)+' 元/时｜夜班 '+num(S.settings.nightRate)+' 元/时）';
+  document.getElementById('chips').innerHTML=chipsHTML(st);
+  document.getElementById('chips2').innerHTML=chipsHTML(st);
+
+  var first=new Date(cur.y,cur.m,1);
+  var lead=(first.getDay()+6)%7;           // 周一为首
+  var last=new Date(cur.y,cur.m+1,0).getDate();
+  var prevLast=new Date(cur.y,cur.m,0).getDate();
+  var html='';
+  for(var i=0;i<lead;i++){
+    var pd=prevLast-lead+1+i;
+    html+=dayHTML(dkey(cur.m===0?cur.y-1:cur.y,cur.m===0?11:cur.m-1,pd),pd,true);
+  }
+  for(var d=1;d<=last;d++) html+=dayHTML(dkey(cur.y,cur.m,d),d,false);
+  var tail=(7-((lead+last)%7))%7;
+  for(var j=1;j<=tail;j++){
+    html+=dayHTML(dkey(cur.m===11?cur.y+1:cur.y,cur.m===11?0:cur.m+1,j),j,true);
+  }
+  document.getElementById('calgrid').innerHTML=html;
+}
+function dayHTML(k,dnum,other){
+  var r=S.records[k], cls='day', txt='', bar='';
+  if(!other&&k===dkey(today.getFullYear(),today.getMonth(),today.getDate())) cls+=' today';
+  if(other) cls+=' other';
+  if(r&&r.type){
+    cls+=' has '+r.type;
+    var c=recPay(r);
+    txt=c.pay>0?('¥'+money(c.pay).replace('.00','')):TN[r.type];
+    bar='<div class="bar"></div>';
+  }
+  return '<button class="'+cls+'" data-k="'+k+'" data-other="'+(other?1:0)+'">'
+    +'<div class="d">'+dnum+'</div><div class="p">'+txt+'</div>'+bar+'</button>';
+}
+function chipsHTML(st){
+  return '<div class="chip"><span class="dot" style="background:var(--day)"></span>白班 <b>'+st.day+'</b> 天</div>'
+    +'<div class="chip"><span class="dot" style="background:var(--night)"></span>夜班 <b>'+st.night+'</b> 天</div>'
+    +'<div class="chip"><span class="dot" style="background:#c7c7cc"></span>休息 <b>'+st.rest+'</b> 天</div>'
+    +'<div class="chip"><span class="dot" style="background:var(--leave)"></span>请假 <b>'+st.leave+'</b> 天</div>';
+}
+  function renderList(){
+  var st=stat(cur.y,cur.m);
+  document.getElementById('chips2').innerHTML=chipsHTML(st);
+  document.getElementById('lMoney').textContent=money(st.pay);
+  document.getElementById('lHours').textContent=(Math.round(st.hours*10)/10);
+  document.getElementById('lDays').textContent=st.worked;
+  document.getElementById('lAvg').textContent='¥'+money(st.worked?st.pay/st.worked:0);
+  document.getElementById('lRate').textContent='本月共 '+st.worked+' 个班次，平均 '+money(st.worked?st.hours/st.worked:0)+' 小时/班';
+  var ks=monthKeys(cur.y,cur.m).filter(function(k){ return S.records[k]&&S.records[k].type; }).reverse();
+  var box=document.getElementById('listbox');
+  box.innerHTML=ks.map(function(k){
+    var r=S.records[k],dt=k2date(k),c=recPay(r);
+    var subNames=(r.subsidies||[]).map(function(s){ return s.name+' '+num(s.amount); }).join('、');
+    var extra='';
+    if(r.type==='night'&&num(S.settings.nightBonus)>0) extra+='夜班补 '+num(S.settings.nightBonus)+'、';
+    var l2=[];
+    if(c.hours>0) l2.push(c.hours+'h × '+rateOf(r.type)+'元 = ¥'+money(c.wage));
+    if(subNames||extra) l2.push('补贴：'+(extra+subNames).replace(/、$/,''));
+    if(r.note) l2.push(r.note);
+    return '<div class="item" data-k="'+k+'">'
+      +'<div class="date"><div class="dd">'+(dt.getMonth()+1)+'/'+dt.getDate()+'</div><div class="dw">'+WD[dt.getDay()]+'</div></div>'
+      +'<div class="mid"><div class="l1"><span class="tag '+r.type+'">'+TN[r.type]+'</span></div>'
+      +'<div class="l2">'+l2.join('　·　')+'</div></div>'
+      +'<div class="amt"><div class="v">'+(c.pay>0?'¥'+money(c.pay):'—')+'</div>'
+      +'<div class="h">'+(c.hours>0?c.hours+' h':'')+'</div></div></div>';
+  }).join('');
+  document.getElementById('listEmpty').classList.toggle('hide',ks.length>0);
+  box.classList.toggle('hide',ks.length===0);
+}
+function renderSet(){
+  document.getElementById('dayRate').value=S.settings.dayRate;
+  document.getElementById('nightRate').value=S.settings.nightRate;
+  document.getElementById('nightBonus').value=S.settings.nightBonus;
+  document.getElementById('tplList').innerHTML=S.settings.tpls.map(function(t,i){
+    return '<div class="tpl-edit" data-i="'+i+'">'
+      +'<input class="n" value="'+esc(t.name)+'" placeholder="补贴名称">'
+      +'<input class="a" type="number" inputmode="decimal" step="1" value="'+num(t.amount)+'" placeholder="0">'
+      +'<div class="unit">元</div><button class="x" data-del="'+i+'">×</button></div>';
+  }).join('')||'<div class="tip" style="padding:10px 14px">还没有补贴模板，点下面添加。</div>';
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+/* ============ 编辑面板 ============ */
+var editing=null, draft=null;
+function openSheet(k){
+  editing=k;
+  var r=S.records[k]||{};
+  draft={
+    type:r.type||'day',
+    start:r.start||'', end:r.end||'',
+    hours:r.hours!=null&&r.hours!==''?r.hours:'',
+    subsidies:(r.subsidies||[]).map(function(s){ return {name:s.name,amount:s.amount}; }),
+    note:r.note||''
+  };
+  var dt=k2date(k);
+  document.getElementById('sheetTitle').innerHTML=(dt.getMonth()+1)+'月'+dt.getDate()+'日<span>'+WD[dt.getDay()]+'</span>';
+  document.getElementById('inStart').value=draft.start;
+  document.getElementById('inEnd').value=draft.end;
+  document.getElementById('inHours').value=draft.hours;
+  document.getElementById('inNote').value=draft.note;
+  document.getElementById('btnDel').classList.toggle('hide',!S.records[k]);
+  syncSheet();
+  document.getElementById('mask').classList.add('show');
+  document.getElementById('sheet').classList.add('show');
+}
+function closeSheet(){
+  document.getElementById('mask').classList.remove('show');
+  document.getElementById('sheet').classList.remove('show');
+  if(document.activeElement) document.activeElement.blur();
+}
+function syncSheet(){
+  var t=draft.type;
+  document.querySelectorAll('#segType button').forEach(function(b){
+    b.classList.toggle('on',b.dataset.t===t);
+  });
+  document.getElementById('workFields').classList.toggle('hide',t==='rest'||t==='leave');
+  // 补贴模板按钮
+  var tpls=S.settings.tpls;
+  document.getElementById('sheetTpls').innerHTML=tpls.map(function(tp,i){
+    var on=draft.subsidies.some(function(s){ return s.name===tp.name; });
+    return '<button data-i="'+i+'" class="'+(on?'on':'')+'">'+esc(tp.name)+' '+num(tp.amount)+'</button>';
+  }).join('')+'<button class="add" data-add="1">＋ 自定义</button>';
+  // 已选补贴
+  document.getElementById('subList').innerHTML=draft.subsidies.map(function(s,i){
+    return '<div class="sub-row" data-i="'+i+'">'
+      +'<input class="n" value="'+esc(s.name)+'" placeholder="补贴名称">'
+      +'<input class="a" type="number" inputmode="decimal" step="1" value="'+num(s.amount)+'" placeholder="0">'
+      +'<div class="unit" style="font-size:12px;color:var(--sub)">元</div>'
+      +'<button class="x" data-sdel="'+i+'">×</button></div>';
+  }).join('');
+  var c=recPay({type:t,hours:draft.hours,subsidies:draft.subsidies});
+  document.getElementById('sheetTotal').textContent='¥'+money(c.pay);
+}
+function saveSheet(){
+  if(!draft.type){ closeSheet(); return; }
+  var rec={type:draft.type,note:draft.note};
+  if(draft.type==='day'||draft.type==='night'){
+    rec.start=draft.start; rec.end=draft.end;
+    rec.hours=num(draft.hours);
+    rec.subsidies=draft.subsidies.filter(function(s){ return s.name||num(s.amount); })
+      .map(function(s){ return {name:s.name||'补贴',amount:num(s.amount)}; });
+  }
+  S.records[editing]=rec;
+  save(); closeSheet(); renderAll();
+}
+
+/* ============ 事件 ============ */
+document.getElementById('prevM').onclick=function(){ cur.m--; if(cur.m<0){cur.m=11;cur.y--;} renderAll(); };
+document.getElementById('nextM').onclick=function(){ cur.m++; if(cur.m>11){cur.m=0;cur.y++;} renderAll(); };
+document.getElementById('todayBtn').onclick=function(){ cur={y:today.getFullYear(),m:today.getMonth()}; renderAll(); };
+
+document.querySelectorAll('.tabbar button').forEach(function(b){
+  b.onclick=function(){
+    page=b.dataset.p;
+    document.querySelectorAll('.tabbar button').forEach(function(x){ x.classList.toggle('on',x===b); });
+    ['cal','list','set'].forEach(function(p){
+      document.getElementById('page-'+p).classList.toggle('hide',p!==page);
+    });
+    document.getElementById('fab').classList.toggle('hide',page==='set');
+    document.querySelector('.topbar').classList.toggle('hide',page==='set');
+    renderAll();
+  };
+});
+document.querySelector('.topbar').classList.remove('hide');
+
+document.getElementById('calgrid').addEventListener('click',function(e){
+  var b=e.target.closest('.day'); if(!b) return;
+  var k=b.dataset.k;
+  if(b.dataset.other==='1'){            // 点到相邻月份 → 跳月
+    var d=k2date(k); cur={y:d.getFullYear(),m:d.getMonth()}; renderAll();
+  }
+  openSheet(k);
+});
+document.getElementById('listbox').addEventListener('click',function(e){
+  var it=e.target.closest('.item'); if(it) openSheet(it.dataset.k);
+});
+document.getElementById('fab').onclick=function(){ openSheet(dkey(today.getFullYear(),today.getMonth(),today.getDate())); };
+
+document.getElementById('mask').onclick=closeSheet;
+document.getElementById('btnCancel').onclick=closeSheet;
+document.getElementById('btnSave').onclick=saveSheet;
+document.getElementById('btnSave2').onclick=saveSheet;
+document.getElementById('btnDel').onclick=function(){
+  if(!confirm('删除这一天的记录？')) return;
+  delete S.records[editing]; save(); closeSheet(); renderAll();
+};
+
+document.getElementById('segType').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  draft.type=b.dataset.t;
+  if((draft.type==='day'||draft.type==='night')&&!num(draft.hours)&&!draft.start){
+    // 给个常用默认值，方便快速记录
+    if(draft.type==='night'){ draft.start='22:00'; draft.end='06:00'; }
+    else { draft.start='09:00'; draft.end='18:00'; }
+    draft.hours=diffH(draft.start,draft.end);
+    document.getElementById('inStart').value=draft.start;
+    document.getElementById('inEnd').value=draft.end;
+    document.getElementById('inHours').value=draft.hours;
+  }
+  syncSheet();
+});
+function diffH(a,b){
+  if(!a||!b) return '';
+  if(a===b) return 0;
+  var p=a.split(':'),q=b.split(':');
+  var s=+p[0]*60+ +p[1], e=+q[0]*60+ +q[1];
+  if(e<s) e+=24*60;                      // 跨夜
+  return Math.round((e-s)/60*100)/100;
+}
+['inStart','inEnd'].forEach(function(id){
+  document.getElementById(id).addEventListener('change',function(){
+    draft.start=document.getElementById('inStart').value;
+    draft.end=document.getElementById('inEnd').value;
+    var h=diffH(draft.start,draft.end);
+    if(h!==''){ draft.hours=h; document.getElementById('inHours').value=h; }
+    syncSheet();
+  });
+});
+document.getElementById('inHours').addEventListener('input',function(){
+  draft.hours=this.value; syncSheet();
+});
+document.getElementById('inNote').addEventListener('input',function(){ draft.note=this.value; });
+
+document.getElementById('sheetTpls').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.add){
+    draft.subsidies.push({name:'',amount:0});
+  }else{
+    var tp=S.settings.tpls[+b.dataset.i];
+    var idx=draft.subsidies.findIndex(function(s){ return s.name===tp.name; });
+    if(idx>=0) draft.subsidies.splice(idx,1);
+    else draft.subsidies.push({name:tp.name,amount:num(tp.amount)});
+  }
+  syncSheet();
+});
+document.getElementById('subList').addEventListener('click',function(e){
+  var x=e.target.closest('[data-sdel]'); if(!x) return;
+  draft.subsidies.splice(+x.dataset.sdel,1); syncSheet();
+});
+document.getElementById('subList').addEventListener('input',function(e){
+  var row=e.target.closest('.sub-row'); if(!row) return;
+  var i=+row.dataset.i;
+  if(e.target.classList.contains('n')) draft.subsidies[i].name=e.target.value;
+  else draft.subsidies[i].amount=num(e.target.value);
+  document.getElementById('sheetTotal').textContent='¥'+money(recPay({type:draft.type,hours:draft.hours,subsidies:draft.subsidies}).pay);
+});
+
+/* ---- 设置 ---- */
+['dayRate','nightRate','nightBonus'].forEach(function(id){
+  document.getElementById(id).addEventListener('change',function(){
+    S.settings[id]=num(this.value); save(); renderAll();
+  });
+});
+document.getElementById('addTpl').onclick=function(){
+  S.settings.tpls.push({id:'t'+Date.now(),name:'',amount:0}); save(); renderSet();
+};
+document.getElementById('tplList').addEventListener('click',function(e){
+  var x=e.target.closest('[data-del]'); if(!x) return;
+  S.settings.tpls.splice(+x.dataset.del,1); save(); renderSet();
+});
+document.getElementById('tplList').addEventListener('input',function(e){
+  var row=e.target.closest('.tpl-edit'); if(!row) return;
+  var t=S.settings.tpls[+row.dataset.i];
+  if(e.target.classList.contains('n')) t.name=e.target.value; else t.amount=num(e.target.value);
+  save();
+});
+document.getElementById('expJson').onclick=function(){
+  download('工资记录备份-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(S,null,2),'application/json');
+};
+document.getElementById('expCsv').onclick=function(){
+  var rows=[['日期','星期','班次','时长(h)','时薪(元)','工时工资(元)','补贴明细','补贴合计(元)','当日合计(元)','备注']];
+  monthKeys(cur.y,cur.m).forEach(function(k){
+    var r=S.records[k]; if(!r||!r.type) return;
+    var c=recPay(r),dt=k2date(k);
+    var subs=(r.subsidies||[]).map(function(s){ return s.name+' '+num(s.amount); }).join('；');
+    if(r.type==='night'&&num(S.settings.nightBonus)>0) subs=(subs?subs+'；':'')+'夜班补 '+num(S.settings.nightBonus);
+    rows.push([k,WD[dt.getDay()],TN[r.type],c.hours,rateOf(r.type),c.wage.toFixed(2),subs,c.sub.toFixed(2),c.pay.toFixed(2),r.note||'']);
+  });
+  var csv='\ufeff'+rows.map(function(r){
+    return r.map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(',');
+  }).join('\r\n');
+  download('工资明细-'+cur.y+'-'+pad(cur.m+1)+'.csv',csv,'text/csv');
+};
+document.getElementById('impJson').onclick=function(){ document.getElementById('fileInput').click(); };
+document.getElementById('fileInput').addEventListener('change',function(){
+  var f=this.files[0]; if(!f) return;
+  var fr=new FileReader();
+  fr.onload=function(){
+    try{
+      var o=JSON.parse(fr.result);
+      if(!o||typeof o!=='object'||!o.records) throw 0;
+      if(!confirm('导入将覆盖当前所有记录，确定继续？')) return;
+      S=o; S.settings=Object.assign({},DEF.settings,S.settings||{}); save(); renderAll();
+      alert('导入成功');
+    }catch(e){ alert('文件格式不正确，导入失败'); }
+    document.getElementById('fileInput').value='';
+  };
+  fr.readAsText(f);
+});
+document.getElementById('copyTxt').onclick=function(){
+  var txt=JSON.stringify(S);
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ alert('已复制，粘贴到备忘录保存即可'); },function(){ fallbackCopy(txt); });
+  }else fallbackCopy(txt);
+};
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta);
+  ta.select(); try{ document.execCommand('copy'); alert('已复制，粘贴到备忘录保存即可'); }catch(e){ alert('复制失败'); }
+  document.body.removeChild(ta);
+}
+document.getElementById('clearAll').onclick=function(){
+  if(!confirm('确定清空全部记录？时薪和补贴模板会保留。此操作不可撤销。')) return;
+  S.records={}; save(); renderAll(); alert('已清空');
+};
+function download(name,content,type){
+  var blob=new Blob([content],{type:type+';charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a'); a.href=url; a.download=name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); },1000);
+}
+
+/* ============ 启动 ============ */
+function showNotice(html,warn){
+  var n=document.getElementById('notice');
+  n.innerHTML='<button class="cl" id="noticeCl">×</button>'+html;
+  n.className='notice'+(warn?' warn':'');
+  document.getElementById('noticeCl').onclick=function(){ n.classList.add('hide'); };
+}
+(function checkEnv(){
+  var ua=navigator.userAgent||'';
+  var inWeChat=/MicroMessenger/i.test(ua);
+  var canStore=true;
+  try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }catch(e){ canStore=false; }
+  if(inWeChat){
+    showNotice('<b>建议换 Safari 打开</b>：点右上角「···」→「在 Safari 中打开」，再点底部分享 →「添加到主屏幕」，之后用起来跟 App 一样，数据也存得更稳。');
+  }else if(!canStore){
+    showNotice('<b>当前环境无法保存数据</b>：请用 Safari 打开本页（文件 → 分享 → 在 Safari 中打开），否则记的工资关掉就没了。',true);
+  }else if(location.protocol==='file:'){
+    showNotice('当前是用本地文件打开的，数据可以正常保存。<b>想更好用</b>：用 Safari 打开后点分享 →「添加到主屏幕」。');
+  }
+})();
+renderAll();
+// 离线缓存：注册后即使链接失效也能打开
+if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+  window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+}
+})();
+</script>
+</body>
+</html>
