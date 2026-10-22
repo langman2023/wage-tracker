@@ -219,6 +219,9 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
 .btn.ghost{background:var(--bg);color:var(--text);font-weight:500}
 .btn.danger{background:var(--bg);color:var(--danger);font-weight:500;margin-top:8px}
 .note-input{background:var(--bg);border-radius:10px;padding:10px 12px;font-size:15px}
+.restrow{display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:10px;padding:9px 12px;margin-top:7px;font-size:13px}
+.restrow .rl2{color:var(--sub);flex:none}
+.restrow input{width:58px;flex:none;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -280,6 +283,7 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
       <div class="row"><div class="rl">白班时薪</div><input class="rv" id="dayRate" type="number" inputmode="decimal" step="0.5" min="0"><div class="unit">元/时</div></div>
       <div class="row"><div class="rl">夜班时薪</div><input class="rv" id="nightRate" type="number" inputmode="decimal" step="0.5" min="0"><div class="unit">元/时</div></div>
       <div class="row"><div class="rl">夜班额外补贴</div><input class="rv" id="nightBonus" type="number" inputmode="decimal" step="1" min="0"><div class="unit">元/班</div></div>
+      <div class="row"><div class="rl">默认中途休息</div><input class="rv" id="defaultRest" type="number" inputmode="numeric" step="5" min="0"><div class="unit">分钟/班</div></div>
     </div>
     <div class="group">
       <div class="gt">补贴模板（记一笔时可一键填入，金额可随时改）</div>
@@ -345,6 +349,11 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
           <input id="inHours" type="number" inputmode="decimal" step="0.5" min="0" class="h" aria-label="小时数">
           <span class="hu">小时</span>
         </div>
+        <div class="restrow">
+          <span class="rl2">中途休息</span>
+          <input id="inRest" type="number" inputmode="numeric" step="5" min="0" aria-label="中途休息分钟数">
+          <span class="rl2">分钟，不计工资（从上面时长中自动扣除）</span>
+        </div>
       </div>
       <div class="sec">
         <div class="st">补贴（点上面的标签快速添加，金额可改）</div>
@@ -376,7 +385,7 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
 /* ============ 存储 ============ */
 var KEY='wage-tracker-v1';
 var DEF={
-  settings:{dayRate:20,nightRate:20,nightBonus:0,
+  settings:{dayRate:20,nightRate:20,nightBonus:0,defaultRest:60,
     tpls:[{id:'t1',name:'餐补',amount:20},{id:'t2',name:'交通补',amount:10}]},
   records:{}
 };
@@ -500,7 +509,7 @@ function chipsHTML(st){
     var extra='';
     if(r.type==='night'&&num(S.settings.nightBonus)>0) extra+='夜班补 '+num(S.settings.nightBonus)+'、';
     var l2=[];
-    if(c.hours>0) l2.push(c.hours+'h × '+rateOf(r.type)+'元 = ¥'+money(c.wage));
+    if(c.hours>0) l2.push(c.hours+'h'+(r.rest?'（休'+r.rest+'分）':'')+' × '+rateOf(r.type)+'元 = ¥'+money(c.wage));
     if(subNames||extra) l2.push('补贴：'+(extra+subNames).replace(/、$/,''));
     if(r.note) l2.push(r.note);
     return '<div class="item" data-k="'+k+'">'
@@ -517,6 +526,7 @@ function renderSet(){
   document.getElementById('dayRate').value=S.settings.dayRate;
   document.getElementById('nightRate').value=S.settings.nightRate;
   document.getElementById('nightBonus').value=S.settings.nightBonus;
+  document.getElementById('defaultRest').value=S.settings.defaultRest;
   document.getElementById('tplList').innerHTML=S.settings.tpls.map(function(t,i){
     return '<div class="tpl-edit" data-i="'+i+'">'
       +'<input class="n" value="'+esc(t.name)+'" placeholder="补贴名称">'
@@ -535,6 +545,7 @@ function openSheet(k){
     type:r.type||'day',
     start:r.start||'', end:r.end||'',
     hours:r.hours!=null&&r.hours!==''?r.hours:'',
+    rest:(r.rest!=null?r.rest:(S.records[k]?0:num(S.settings.defaultRest))),
     subsidies:(r.subsidies||[]).map(function(s){ return {name:s.name,amount:s.amount}; }),
     note:r.note||''
   };
@@ -543,6 +554,7 @@ function openSheet(k){
   document.getElementById('inStart').value=draft.start;
   document.getElementById('inEnd').value=draft.end;
   document.getElementById('inHours').value=draft.hours;
+  document.getElementById('inRest').value=draft.rest;
   document.getElementById('inNote').value=draft.note;
   document.getElementById('btnDel').classList.toggle('hide',!S.records[k]);
   syncSheet();
@@ -583,6 +595,7 @@ function saveSheet(){
   if(draft.type==='day'||draft.type==='night'){
     rec.start=draft.start; rec.end=draft.end;
     rec.hours=num(draft.hours);
+    rec.rest=Math.max(0,parseInt(draft.rest,10)||0);
     rec.subsidies=draft.subsidies.filter(function(s){ return s.name||num(s.amount); })
       .map(function(s){ return {name:s.name||'补贴',amount:num(s.amount)}; });
   }
@@ -638,7 +651,7 @@ document.getElementById('segType').addEventListener('click',function(e){
     // 给个常用默认值，方便快速记录
     if(draft.type==='night'){ draft.start='22:00'; draft.end='06:00'; }
     else { draft.start='09:00'; draft.end='18:00'; }
-    draft.hours=diffH(draft.start,draft.end);
+    draft.hours=netH();
     document.getElementById('inStart').value=draft.start;
     document.getElementById('inEnd').value=draft.end;
     document.getElementById('inHours').value=draft.hours;
@@ -653,14 +666,26 @@ function diffH(a,b){
   if(e<s) e+=24*60;                      // 跨夜
   return Math.round((e-s)/60*100)/100;
 }
+function netH(){                          // 净时长 = 在岗时长 - 中途休息
+  var d=diffH(draft.start,draft.end);
+  if(d==='') return '';
+  return Math.round(Math.max(0,d-num(draft.rest)/60)*100)/100;
+}
 ['inStart','inEnd'].forEach(function(id){
   document.getElementById(id).addEventListener('change',function(){
     draft.start=document.getElementById('inStart').value;
     draft.end=document.getElementById('inEnd').value;
-    var h=diffH(draft.start,draft.end);
+    var h=netH();
     if(h!==''){ draft.hours=h; document.getElementById('inHours').value=h; }
     syncSheet();
   });
+});
+document.getElementById('inRest').addEventListener('change',function(){
+  draft.rest=Math.max(0,parseInt(this.value,10)||0);
+  this.value=draft.rest;
+  var h=netH();
+  if(h!==''){ draft.hours=h; document.getElementById('inHours').value=h; }
+  syncSheet();
 });
 document.getElementById('inHours').addEventListener('input',function(){
   draft.hours=this.value; syncSheet();
@@ -692,7 +717,7 @@ document.getElementById('subList').addEventListener('input',function(e){
 });
 
 /* ---- 设置 ---- */
-['dayRate','nightRate','nightBonus'].forEach(function(id){
+['dayRate','nightRate','nightBonus','defaultRest'].forEach(function(id){
   document.getElementById(id).addEventListener('change',function(){
     S.settings[id]=num(this.value); save(); renderAll();
   });
@@ -714,13 +739,13 @@ document.getElementById('expJson').onclick=function(){
   download('工资记录备份-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(S,null,2),'application/json');
 };
 document.getElementById('expCsv').onclick=function(){
-  var rows=[['日期','星期','班次','时长(h)','时薪(元)','工时工资(元)','补贴明细','补贴合计(元)','当日合计(元)','备注']];
+  var rows=[['日期','星期','班次','时长(h)','中途休息(分)','时薪(元)','工时工资(元)','补贴明细','补贴合计(元)','当日合计(元)','备注']];
   monthKeys(cur.y,cur.m).forEach(function(k){
     var r=S.records[k]; if(!r||!r.type) return;
     var c=recPay(r),dt=k2date(k);
     var subs=(r.subsidies||[]).map(function(s){ return s.name+' '+num(s.amount); }).join('；');
     if(r.type==='night'&&num(S.settings.nightBonus)>0) subs=(subs?subs+'；':'')+'夜班补 '+num(S.settings.nightBonus);
-    rows.push([k,WD[dt.getDay()],TN[r.type],c.hours,rateOf(r.type),c.wage.toFixed(2),subs,c.sub.toFixed(2),c.pay.toFixed(2),r.note||'']);
+    rows.push([k,WD[dt.getDay()],TN[r.type],c.hours,r.rest||0,rateOf(r.type),c.wage.toFixed(2),subs,c.sub.toFixed(2),c.pay.toFixed(2),r.note||'']);
   });
   var csv='\ufeff'+rows.map(function(r){
     return r.map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(',');
