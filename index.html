@@ -88,6 +88,7 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
 .day.other{opacity:.28}
 .day .d{font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1}
 .day .p{font-size:9.5px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1;opacity:.9;white-space:nowrap}
+.day .s{font-size:8.5px;font-variant-numeric:tabular-nums;line-height:1.1;opacity:.62;white-space:nowrap;max-width:100%;overflow:hidden}
 .day .bar{position:absolute;left:50%;transform:translateX(-50%);bottom:4px;width:14px;height:3px;border-radius:2px;background:currentColor;opacity:.85}
 .day.today .d{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--accent);color:#fff}
 .day.has.today .d{background:var(--day)}
@@ -319,7 +320,7 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
       </div>
     </div>
     <div class="group">
-      <div class="gt">补贴模板（记一笔时可一键填入，金额可随时改）</div>
+      <div class="gt">补贴类型（金额留空＝每天不同，用时手填；填了数字＝每次自动带出）</div>
       <div id="tplList"></div>
       <button class="addbtn" id="addTpl">＋ 添加补贴类型</button>
     </div>
@@ -389,7 +390,7 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
         </div>
       </div>
       <div class="sec">
-        <div class="st">补贴（点上面的标签快速添加，金额可改）</div>
+        <div class="st">补贴（点标签加一行，直接输入当天金额）</div>
         <div class="tpls" id="sheetTpls"></div>
         <div id="subList"></div>
       </div>
@@ -420,7 +421,7 @@ var KEY='wage-tracker-v1';
 var DEF={
   settings:{dayRate:20,nightRate:20,nightBonus:0,defaultRest:60,
     shifts:{day:{start:'09:00',end:'18:00',rest:60},night:{start:'22:00',end:'06:00',rest:60}},
-    tpls:[{id:'t1',name:'餐补',amount:20},{id:'t2',name:'交通补',amount:10}]},
+    tpls:[{id:'t1',name:'餐补',amount:null},{id:'t2',name:'交通补',amount:null}]},
   records:{}
 };
 var S=load();
@@ -514,17 +515,19 @@ function renderCal(){
   document.getElementById('calgrid').innerHTML=html;
 }
 function dayHTML(k,dnum,other){
-  var r=S.records[k], cls='day', txt='', bar='';
+  var r=S.records[k], cls='day', txt='', sub='', bar='';
   if(!other&&k===dkey(today.getFullYear(),today.getMonth(),today.getDate())) cls+=' today';
   if(other) cls+=' other';
   if(r&&r.type){
     cls+=' has '+r.type;
     var c=recPay(r);
     txt=c.pay>0?('¥'+money(c.pay).replace('.00','')):TN[r.type];
+    if(c.sub>0) sub='补'+money(c.sub).replace('.00','');
     bar='<div class="bar"></div>';
   }
   return '<button class="'+cls+'" data-k="'+k+'" data-other="'+(other?1:0)+'">'
-    +'<div class="d">'+dnum+'</div><div class="p">'+txt+'</div>'+bar+'</button>';
+    +'<div class="d">'+dnum+'</div><div class="p">'+txt+'</div>'
+    +'<div class="s">'+sub+'</div>'+bar+'</button>';
 }
 function chipsHTML(st){
   return '<div class="chip"><span class="dot" style="background:var(--day)"></span>白班 <b>'+st.day+'</b> 天</div>'
@@ -575,14 +578,14 @@ function renderSet(){
   document.getElementById('tplList').innerHTML=S.settings.tpls.map(function(t,i){
     return '<div class="tpl-edit" data-i="'+i+'">'
       +'<input class="n" value="'+esc(t.name)+'" placeholder="补贴名称">'
-      +'<input class="a" type="number" inputmode="decimal" step="1" value="'+num(t.amount)+'" placeholder="0">'
+      +'<input class="a" type="number" inputmode="decimal" step="1" value="'+(t.amount==null?'':num(t.amount))+'" placeholder="手填">'
       +'<div class="unit">元</div><button class="x" data-del="'+i+'">×</button></div>';
   }).join('')||'<div class="tip" style="padding:10px 14px">还没有补贴模板，点下面添加。</div>';
 }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
 /* ============ 编辑面板 ============ */
-var editing=null, draft=null;
+var editing=null, draft=null, pendingFocus=-1;
 function openSheet(k){
   editing=k;
   var r=S.records[k]||{};
@@ -630,18 +633,25 @@ function syncSheet(){
   var tpls=S.settings.tpls;
   document.getElementById('sheetTpls').innerHTML=tpls.map(function(tp,i){
     var on=draft.subsidies.some(function(s){ return s.name===tp.name; });
-    return '<button data-i="'+i+'" class="'+(on?'on':'')+'">'+esc(tp.name)+' '+num(tp.amount)+'</button>';
-  }).join('')+'<button class="add" data-add="1">＋ 自定义</button>';
+    return '<button data-i="'+i+'" class="'+(on?'on':'')+'">'+esc(tp.name)+(tp.amount==null?'':' '+num(tp.amount))+'</button>';
+  }).join('')+'<button class="add" data-add="1">＋ 手填一笔</button>';
   // 已选补贴
   document.getElementById('subList').innerHTML=draft.subsidies.map(function(s,i){
     return '<div class="sub-row" data-i="'+i+'">'
       +'<input class="n" value="'+esc(s.name)+'" placeholder="补贴名称">'
-      +'<input class="a" type="number" inputmode="decimal" step="1" value="'+num(s.amount)+'" placeholder="0">'
+      +'<input class="a" type="number" inputmode="decimal" step="1" value="'+(s.amount===''?'':num(s.amount))+'" placeholder="金额">'
       +'<div class="unit" style="font-size:12px;color:var(--sub)">元</div>'
       +'<button class="x" data-sdel="'+i+'">×</button></div>';
   }).join('');
   var c=recPay({type:t,hours:draft.hours,subsidies:draft.subsidies});
   document.getElementById('sheetTotal').textContent='¥'+money(c.pay);
+  // 刚点标签加进来的补贴：自动聚焦金额框，直接输入当天金额
+  if(pendingFocus>=0){
+    var rows=document.querySelectorAll('#subList .sub-row');
+    var inp=rows[pendingFocus]&&rows[pendingFocus].querySelector('.a');
+    if(inp){ try{ inp.focus(); if(inp.select) inp.select(); }catch(e){} }
+    pendingFocus=-1;
+  }
 }
 function saveSheet(){
   if(!draft.type){ closeSheet(); return; }
@@ -758,12 +768,17 @@ document.getElementById('inNote').addEventListener('input',function(){ draft.not
 document.getElementById('sheetTpls').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
   if(b.dataset.add){
-    draft.subsidies.push({name:'',amount:0});
+    draft.subsidies.push({name:'',amount:''});
+    pendingFocus=draft.subsidies.length-1;
   }else{
     var tp=S.settings.tpls[+b.dataset.i];
     var idx=draft.subsidies.findIndex(function(s){ return s.name===tp.name; });
-    if(idx>=0) draft.subsidies.splice(idx,1);
-    else draft.subsidies.push({name:tp.name,amount:num(tp.amount)});
+    if(idx>=0){
+      draft.subsidies.splice(idx,1);              // 再点一次＝去掉这项
+    }else{
+      draft.subsidies.push({name:tp.name,amount:(tp.amount==null?'':tp.amount)});
+      pendingFocus=draft.subsidies.length-1;      // 自动聚焦，直接输当天金额
+    }
   }
   syncSheet();
 });
@@ -775,7 +790,7 @@ document.getElementById('subList').addEventListener('input',function(e){
   var row=e.target.closest('.sub-row'); if(!row) return;
   var i=+row.dataset.i;
   if(e.target.classList.contains('n')) draft.subsidies[i].name=e.target.value;
-  else draft.subsidies[i].amount=num(e.target.value);
+  else draft.subsidies[i].amount=(e.target.value===''?'':num(e.target.value));
   document.getElementById('sheetTotal').textContent='¥'+money(recPay({type:draft.type,hours:draft.hours,subsidies:draft.subsidies}).pay);
 });
 
@@ -804,7 +819,8 @@ document.getElementById('tplList').addEventListener('click',function(e){
 document.getElementById('tplList').addEventListener('input',function(e){
   var row=e.target.closest('.tpl-edit'); if(!row) return;
   var t=S.settings.tpls[+row.dataset.i];
-  if(e.target.classList.contains('n')) t.name=e.target.value; else t.amount=num(e.target.value);
+  if(e.target.classList.contains('n')) t.name=e.target.value;
+  else { var v=String(e.target.value).trim(); t.amount=(v===''?null:num(v)); }
   save();
 });
 document.getElementById('expJson').onclick=function(){
