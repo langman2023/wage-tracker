@@ -121,9 +121,15 @@ main{padding:4px 16px calc(env(safe-area-inset-bottom,0px) + 92px);max-width:640
 .item .mid{flex:1;min-width:0}
 .item .mid .l1{display:flex;align-items:center;gap:6px}
 .tag{font-size:11px;font-weight:600;padding:1.5px 7px;border-radius:5px;color:#fff;flex:none}
-.tag.day{background:var(--day)} .tag.night{background:var(--night)}
-.tag.rest{background:#c7c7cc;color:#1c1c1e} .tag.leave{background:var(--leave);color:#1c1c1e}
-.item .mid .l2{font-size:11.5px;color:var(--sub);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag.tday{background:var(--day)} .tag.tnight{background:var(--night)}
+.tag.trest{background:#c7c7cc;color:#1c1c1e} .tag.tleave{background:var(--leave);color:#1c1c1e}
+.item .mid .l2{font-size:11.5px;color:var(--sub);margin-top:3px;line-height:1.7}
+.item .mid .l2 .ln{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .mid .l2 .note{color:var(--sub);word-break:break-all}
+.sb{
+  display:inline-block;background:var(--bg);border-radius:4px;padding:0 5px;
+  margin:1px 4px 0 0;font-size:11px;color:var(--text);font-variant-numeric:tabular-nums;
+}
 .item .amt{text-align:right;flex:none}
 .item .amt .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
 .item .amt .h{font-size:11px;color:var(--sub);font-variant-numeric:tabular-nums}
@@ -547,19 +553,22 @@ function chipsHTML(st){
   var box=document.getElementById('listbox');
   box.innerHTML=ks.map(function(k){
     var r=S.records[k],dt=k2date(k),c=recPay(r);
-    var subNames=(r.subsidies||[]).map(function(s){ return s.name+' '+num(s.amount); }).join('、');
-    var extra='';
-    if(r.type==='night'&&num(S.settings.nightBonus)>0) extra+='夜班补 '+num(S.settings.nightBonus)+'、';
-    var l2=[];
-    if(c.hours>0) l2.push(c.hours+'h'+(r.rest?'（休'+r.rest+'分）':'')+' × '+rateOf(r.type)+'元 = ¥'+money(c.wage));
-    if(subNames||extra) l2.push('补贴：'+(extra+subNames).replace(/、$/,''));
-    if(r.note) l2.push(r.note);
+    var pills=(r.subsidies||[]).map(function(s){
+      return '<span class="sb">'+esc(s.name||'补贴')+' '+num(s.amount)+'</span>';
+    }).join('');
+    if(r.type==='night'&&num(S.settings.nightBonus)>0)
+      pills+='<span class="sb">夜班补 '+num(S.settings.nightBonus)+'</span>';
+    var lines=[];
+    if(c.hours>0) lines.push('<div class="ln">'+c.hours+'h'+(r.rest?'（休'+r.rest+'分）':'')
+      +' × '+rateOf(r.type)+'元 = ¥'+money(c.wage)+'</div>');
+    if(pills) lines.push('<div class="ln">补贴：'+pills+'</div>');
+    if(r.note) lines.push('<div class="note">'+esc(r.note)+'</div>');
     return '<div class="item" data-k="'+k+'">'
       +'<div class="date"><div class="dd">'+(dt.getMonth()+1)+'/'+dt.getDate()+'</div><div class="dw">'+WD[dt.getDay()]+'</div></div>'
-      +'<div class="mid"><div class="l1"><span class="tag '+r.type+'">'+TN[r.type]+'</span></div>'
-      +'<div class="l2">'+l2.join('　·　')+'</div></div>'
+      +'<div class="mid"><div class="l1"><span class="tag t'+r.type+'">'+TN[r.type]+'</span></div>'
+      +'<div class="l2">'+lines.join('')+'</div></div>'
       +'<div class="amt"><div class="v">'+(c.pay>0?'¥'+money(c.pay):'—')+'</div>'
-      +'<div class="h">'+(c.hours>0?c.hours+' h':'')+'</div></div></div>';
+      +'<div class="h">'+(c.hours>0?c.hours+' h':'')+(c.sub>0?' · 补'+money(c.sub).replace('.00',''):'')+'</div></div>';
   }).join('');
   document.getElementById('listEmpty').classList.toggle('hide',ks.length>0);
   box.classList.toggle('hide',ks.length===0);
